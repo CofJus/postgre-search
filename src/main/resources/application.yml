@@ -1,0 +1,21 @@
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:postgresql://localhost:5432/article?useUnicode=true&characterEncoding=utf8
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update # 开发环境用update，生产用none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true # 格式化SQL日志
+    show-sql: true # 显示SQL语句
+  # 日志配置
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
