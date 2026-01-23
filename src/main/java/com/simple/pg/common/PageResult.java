@@ -20,6 +20,4 @@ public class PageResult<T> {
     private List<T> itemList;
 
     private boolean success;
-
-    private boolean hasNext;
 }

@@ -1,7 +1,9 @@
 package com.simple.pg.entity;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 /**
@@ -9,22 +11,17 @@ import java.time.LocalDateTime;
  * @date 2026/1/22
  */
 @Data
-@Entity
-@Table(name = "article_search")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArticleSearchEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "article_id", unique = true, nullable = false)
     private Long articleId;
 
     private String keywords;
 
-    @Column(columnDefinition = "tsvector", nullable = false)
     private String tsv;
 
-    @Column(name = "update_time")
-    private LocalDateTime updateTime = LocalDateTime.now();
+    private LocalDateTime updateTime;
 }
