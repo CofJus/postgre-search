@@ -15,15 +15,16 @@ public interface ArticleSearchRepository {
 
     int insert(ArticleSearchEntity articleSearch);
 
-    int updateByArticleId(@Param("articleId") Long articleId,
-                          @Param("keywords") String keywords,
-                          @Param("tsVectorStr") String tsVectorStr);
+    int updateVectorByArticleId(@Param("articleId") Long articleId,
+                          @Param("keywords") String keywords, @Param("titleKeywords") String titleKeywords,
+                          @Param("tsVectorStr") String tsVectorStr, @Param("titleTsVectorStr") String titleTsVectorStr);
 
     ArticleSearchEntity selectByArticleId(@Param("articleId") Long articleId);
 
-    List<Long> searchArticleIds(@Param("tsQueryStr") String tsQueryStr,
+    List<Long> search(@Param("tsQueryStr") String tsQueryStr,
+                                @Param("isSingleChar") int isSingleChar,
                                 @Param("limit") long limit,
                                 @Param("offset") long offset);
 
-    Long countSearchTotal(@Param("tsQueryStr") String tsQueryStr);
+    Long countSearchTotal(@Param("tsQueryStr") String tsQueryStr, @Param("isSingleChar") int isSingleChar);
 }

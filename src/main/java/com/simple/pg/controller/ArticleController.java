@@ -1,6 +1,7 @@
 package com.simple.pg.controller;
 
 import com.simple.pg.business.ArticleBusiness;
+import com.simple.pg.common.Result;
 import com.simple.pg.data.request.CreateArticleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class ArticleController {
     private ArticleBusiness articleBusiness;
 
     @PostMapping("/create")
-    public void create(@RequestBody CreateArticleRequest request) {
-        articleBusiness.create(request);
+    public Result<Void> create(@RequestBody CreateArticleRequest request) {
+        return articleBusiness.create(request);
     }
 }

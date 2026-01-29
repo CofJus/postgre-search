@@ -1,5 +1,6 @@
 package com.simple.pg.business;
 
+import com.simple.pg.common.Result;
 import com.simple.pg.data.model.VectorizedText;
 import com.simple.pg.data.request.CreateArticleRequest;
 import com.simple.pg.service.ArticleService;
@@ -20,12 +21,19 @@ public class ArticleBusiness {
     @Autowired
     private ArticleService articleService;
 
-    public void create(CreateArticleRequest request) {
+    public Result<Void> create(CreateArticleRequest request) {
         long articleId = SnowFlakeUtil.getInstance().nextId();
-        List<String> keywords = ChineseSegmentUtil.segment(request.getContent());
-        String tsv = ChineseSegmentUtil.toTsVectorString(keywords);
-        VectorizedText vectorizedText = VectorizedText.of(keywords, tsv);
-        articleService.create(articleId, request, vectorizedText);
+        // vectorize the title
+        List<String> titleKeywords = ChineseSegmentUtil.segment(request.getTitle());
+        String titleTsv = ChineseSegmentUtil.toTsVectorString(titleKeywords);
+        VectorizedText titleVector = VectorizedText.of(titleKeywords, titleTsv);
+
+        // vectorize the content
+        List<String> contentKeywords = ChineseSegmentUtil.segment(request.getContent());
+        String contentTsv = ChineseSegmentUtil.toTsVectorString(contentKeywords);
+        VectorizedText contentVector = VectorizedText.of(contentKeywords, contentTsv);
+
+        return articleService.create(articleId, request, titleVector, contentVector);
     }
 
 }

@@ -97,6 +97,13 @@ public class ChineseSegmentUtil {
      * 精准搜索
      */
     public static String toAccurateTsQueryString(String searchText) {
+        if (null == searchText || searchText.trim().isEmpty()) {
+            return "";
+        }
+        if (searchText.length() == 1) {
+            return "'" + searchText + ":*'";
+        }
+
         List<String> keywords = segment(searchText);
         if (CollectionUtils.isEmpty(keywords)) {
             return "''";

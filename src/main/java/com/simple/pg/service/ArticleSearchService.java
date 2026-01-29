@@ -22,12 +22,12 @@ public class ArticleSearchService {
 
     public PageResult<Long> search(String keyword, int page, int pageSize) {
         String tsQueryStr = ChineseSegmentUtil.toAccurateTsQueryString(keyword);
-        long total = articleSearchRepository.countSearchTotal(tsQueryStr);
+        long total = articleSearchRepository.countSearchTotal(tsQueryStr, keyword.length() == 1 ? 1 : 0);
         if (total == 0) {
             return PageResultFactory.success(Collections.emptyList(), 0);
         }
         long offset = (long) (page - 1) * pageSize;
-        List<Long> articleIds = articleSearchRepository.searchArticleIds(tsQueryStr, pageSize, offset);
+        List<Long> articleIds = articleSearchRepository.search(tsQueryStr, keyword.length() == 1 ? 1 : 0, pageSize, offset);
         return PageResultFactory.success(articleIds, total);
     }
 }

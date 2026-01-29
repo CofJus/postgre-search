@@ -4,36 +4,41 @@
 <mapper namespace="com.simple.pg.repo.ArticleSearchRepository">
 
     <insert id="insert">
-        INSERT INTO article_search (article_id, keywords, tsv, update_time)
-        VALUES (#{articleId}, #{keywords}, #{tsv}::tsvector, CURRENT_TIMESTAMP)
+        INSERT INTO article_search (article_id, title_keywords, keywords, title_tsv, tsv, visible, update_time)
+        VALUES (#{articleId}, #{titleKeywords}, #{keywords}, #{titleTsv}::tsvector, #{tsv}::tsvector, #{visible}, CURRENT_TIMESTAMP)
     </insert>
 
-    <update id="updateByArticleId">
+    <update id="updateVectorByArticleId">
         UPDATE article_search
         SET keywords = #{keywords},
+            title_keywords = #{titleKeywords},
             tsv = CAST(#{tsVectorStr} AS tsvector),
+            title_tsv = #{titleTsVectorStr},
             update_time = CURRENT_TIMESTAMP
         WHERE article_id = #{articleId}
     </update>
 
     <select id="selectByArticleId" resultType="com.simple.pg.entity.ArticleSearchEntity">
-        SELECT id, article_id as articleId, keywords, tsv, update_time as updateTime
+        SELECT *
         FROM article_search
         WHERE article_id = #{articleId}
     </select>
 
-    <select id="searchArticleIds" resultType="java.lang.Long">
+    <select id="search" resultType="java.lang.Long">
         SELECT article_id
         FROM article_search
-        WHERE tsv @@ CAST(#{tsQueryStr} AS tsquery)
-        ORDER BY ts_rank(tsv, CAST(#{tsQueryStr} AS tsquery)) DESC
+        WHERE title_tsv @@ CAST(#{tsQueryStr} AS tsquery) OR tsv @@ CAST(#{tsQueryStr} AS tsquery)
+        ORDER BY (
+                     ts_rank(title_tsv, CAST(#{tsQueryStr} AS tsquery)) * 3
+                         + ts_rank(tsv, CAST(#{tsQueryStr} AS tsquery))
+                     ) * CASE WHEN #{isSingleChar} = 1 THEN 0.3 ELSE 1 END DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="countSearchTotal" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM article_search
-        WHERE tsv @@ CAST(#{tsQueryStr} AS tsquery)
+        WHERE title_tsv @@ CAST(#{tsQueryStr} AS tsquery) OR tsv @@ CAST(#{tsQueryStr} AS tsquery)
     </select>
 
 </mapper>

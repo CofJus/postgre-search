@@ -21,21 +21,30 @@ public class ArticleSearchEntity {
 
     private Long articleId;
 
+    private String titleKeywords;
+
     private String keywords;
 
+    private String titleTsv;
+
     private String tsv;
+
+    private Integer visible;
 
     private LocalDateTime updateTime;
 
     @Nullable
-    public static ArticleSearchEntity of(Long articleId, VectorizedText vectorizedText) {
-        if (null == vectorizedText) {
+    public static ArticleSearchEntity of(Long articleId, VectorizedText titleVector, VectorizedText contentVector, Integer visible) {
+        if (null == titleVector || null == contentVector) {
             return null;
         }
         ArticleSearchEntity articleSearch = new ArticleSearchEntity();
         articleSearch.setArticleId(articleId);
-        articleSearch.setKeywords(vectorizedText.getKeywords());
-        articleSearch.setTsv(vectorizedText.getTsv());
+        articleSearch.setTitleKeywords(titleVector.getKeywords());
+        articleSearch.setTitleTsv(titleVector.getTsv());
+        articleSearch.setKeywords(contentVector.getKeywords());
+        articleSearch.setTsv(contentVector.getTsv());
+        articleSearch.setVisible(visible);
         articleSearch.setUpdateTime(LocalDateTime.now());
         return articleSearch;
     }
