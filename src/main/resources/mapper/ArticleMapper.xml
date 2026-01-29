@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simple.pg.repo.ArticleRepository">
+
+
+    <insert id="insert" parameterType="com.simple.pg.entity.ArticleEntity">
+        INSERT INTO article (article_id, title, content, author, resource, type, status, create_time, update_time)
+        VALUES (#{articleId}, #{title}, #{content}, #{author}, #{resource}, #{type}, #{status}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+
+    <update id="update" parameterType="com.simple.pg.entity.ArticleEntity">
+        UPDATE article
+        SET title = #{title},
+            content = #{content},
+            author = #{author},
+            resource = #{resource},
+            type = #{type},
+            status = #{status},
+            update_time = CURRENT_TIMESTAMP
+        WHERE article_id = #{articleId}
+    </update>
+
+
+    <select id="selectByArticleId" resultType="com.simple.pg.entity.ArticleEntity" parameterType="java.lang.Long">
+        SELECT * FROM article
+        WHERE article_id = #{articleId}
+    </select>
+</mapper>

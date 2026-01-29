@@ -5,6 +5,8 @@ CREATE TABLE article
     title       TEXT NOT NULL,
     content     TEXT,
     author      VARCHAR(100),
+    resource    VARCHAR(255),
+    type        SMALLINT,
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status      SMALLINT  DEFAULT 1
@@ -22,4 +24,4 @@ CREATE TABLE article_search
 );
 -- GIN INDEX
 CREATE INDEX idx_article_search_tsv ON article_search USING GIN (tsv);
-CREATE INDEX idx_article_search_article_id ON article_search (article_id);
+CREATE UNIQUE INDEX idx_article_search_article_id ON article_search (article_id);
