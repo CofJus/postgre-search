@@ -8,6 +8,17 @@
         VALUES (#{articleId}, #{titleKeywords}, #{keywords}, #{titleTsv}::tsvector, #{tsv}::tsvector, #{visible}, CURRENT_TIMESTAMP)
     </insert>
 
+    <update id="update">
+        UPDATE article_search
+        SET title_keywords = #{titleKeywords},
+            keywords = #{keywords},
+            title_tsv = #{titleTsv}::tsvector,
+            tsv = #{tsv}::tsvector,
+            visible = #{visible},
+            update_time = CURRENT_TIMESTAMP
+        WHERE article_id = #{articleId}
+    </update>
+
     <update id="updateVectorByArticleId">
         UPDATE article_search
         SET keywords = #{keywords},
@@ -40,5 +51,10 @@
         FROM article_search
         WHERE title_tsv @@ CAST(#{tsQueryStr} AS tsquery) OR tsv @@ CAST(#{tsQueryStr} AS tsquery)
     </select>
+
+    <delete id="deleteByArticleId">
+        DELETE FROM article_search
+        WHERE article_id = #{articleId}
+    </delete>
 
 </mapper>

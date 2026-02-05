@@ -21,9 +21,31 @@
         WHERE article_id = #{articleId}
     </update>
 
-
     <select id="selectByArticleId" resultType="com.simple.pg.entity.ArticleEntity" parameterType="java.lang.Long">
         SELECT * FROM article
         WHERE article_id = #{articleId}
     </select>
+
+    <select id="selectByPage" resultType="com.simple.pg.entity.ArticleEntity">
+        SELECT * FROM article
+        ORDER BY create_time DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="selectByArticleIds" resultType="com.simple.pg.entity.ArticleEntity">
+        SELECT * FROM article
+        WHERE article_id IN
+        <foreach collection="list" item="articleId" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </select>
+
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM article
+    </select>
+
+    <delete id="deleteByArticleId" parameterType="java.lang.Long">
+        DELETE FROM article
+        WHERE article_id = #{articleId}
+    </delete>
 </mapper>

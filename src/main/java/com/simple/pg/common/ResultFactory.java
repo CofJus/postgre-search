@@ -1,5 +1,7 @@
 package com.simple.pg.common;
 
+import com.simple.pg.enums.ErrorCodeEnum;
+
 /**
  * @author Rui
  * @date 2026/1/29
@@ -7,15 +9,15 @@ package com.simple.pg.common;
 public class ResultFactory {
 
     public static <T> Result<T> success(T data) {
-        return result(0, "success", true, data);
+        return result(ErrorCodeEnum.SUCCESS.getCode(), ErrorCodeEnum.SUCCESS.getMessage(), true, data);
     }
 
     public static <T> Result<T> success() {
-        return result(0, "success", true, null);
+        return result(ErrorCodeEnum.SUCCESS.getCode(), ErrorCodeEnum.SUCCESS.getMessage(), true, null);
     }
 
-    public static <T> Result<T> fail(String message, int code) {
-        return result(code, message, false, null);
+    public static <T> Result<T> fail(ErrorCodeEnum errorCode) {
+        return result(errorCode.getCode(), errorCode.getMessage(), false, null);
     }
 
     private static <T> Result<T> result(int code, String message, boolean success, T data) {

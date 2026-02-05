@@ -15,6 +15,8 @@ public interface ArticleSearchRepository {
 
     int insert(ArticleSearchEntity articleSearch);
 
+    int update(ArticleSearchEntity articleSearch);
+
     int updateVectorByArticleId(@Param("articleId") Long articleId,
                           @Param("keywords") String keywords, @Param("titleKeywords") String titleKeywords,
                           @Param("tsVectorStr") String tsVectorStr, @Param("titleTsVectorStr") String titleTsVectorStr);
@@ -27,4 +29,6 @@ public interface ArticleSearchRepository {
                                 @Param("offset") long offset);
 
     Long countSearchTotal(@Param("tsQueryStr") String tsQueryStr, @Param("isSingleChar") int isSingleChar);
+
+    int deleteByArticleId(@Param("articleId") Long articleId);
 }

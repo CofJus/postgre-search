@@ -1,1 +1,1 @@
-# postgre-search
+# postgres-search

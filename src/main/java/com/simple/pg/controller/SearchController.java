@@ -2,6 +2,7 @@ package com.simple.pg.controller;
 
 import com.simple.pg.business.SearchBusiness;
 import com.simple.pg.common.PageResult;
+import com.simple.pg.data.response.ArticleSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class SearchController {
     private SearchBusiness searchBusiness;
 
     @GetMapping("/result")
-    public PageResult<Long> search(@RequestParam(name = "keyword") String keyword,
+    public PageResult<ArticleSearchResponse> search(@RequestParam(name = "keyword") String keyword,
                                    @RequestParam(name = "page", defaultValue = "1") int page,
                                    @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
 
