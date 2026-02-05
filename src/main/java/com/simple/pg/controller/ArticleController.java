@@ -8,6 +8,8 @@ import com.simple.pg.entity.ArticleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Rui
  * @date 2026/1/28
@@ -27,11 +29,6 @@ public class ArticleController {
     @GetMapping("/get")
     public Result<ArticleEntity> getByArticleId(@RequestParam Long articleId) {
         return articleBusiness.getByArticleId(articleId);
-    }
-
-    @GetMapping("/list")
-    public PageResult<ArticleEntity> list(QueryArticleRequest request) {
-        return articleBusiness.getPage(request);
     }
 
     @PostMapping("/update")
